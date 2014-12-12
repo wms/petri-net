@@ -11,5 +11,8 @@
   "dependencies": {
     "hapi": "~7.5.2",
     "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "source-map-support": "~0.2.8"
   }
 }

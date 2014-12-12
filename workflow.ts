@@ -1,141 +1,19 @@
 declare var require;
 var _ = require('lodash');
+require('source-map-support').install();
 
-class Connectable {
-	public inputArcs: Arc[] = [];
-	public outputArcs: Arc[] = [];
+import Transition = require('./connectable/Transition');
+import Place = require('./connectable/Place');
+import Net = require('./Net');
 
-	constructor(public name: string) {
-	}
+var p1 = new Place('p1'),
+	p2 = new Place('p2'),
+	p3 = new Place('p3');
 
-	inputs<T>(): T {
-		return _.pluck(this.inputArcs, 'input');
-	}
+var t1 = new Transition('t1', [p1], [p2]),
+	t2 = new Transition('t2', [p2], [p3]);
 
-	outputs<T>(): T {
-		return _.pluck(this.outputArcs, 'output');
-	}
-}
-
-class Place extends Connectable {
-	public tokens: number = 0;
-
-	constructor(public name: string) {
-		super(name);
-	}
-
-	consume() {
-		this.tokens -= 1;
-	}
-
-	produce() {
-		this.tokens += 1;
-	}
-}
-
-class Transition extends Connectable {
-	constructor(public name: string, inputs: Place[], outputs: Place[]) {
-		super(name);
-
-		inputs.forEach((input) => {
-			new Arc(input, this);
-		});
-
-		outputs.forEach((output) => {
-			new Arc(this, output);
-		});
-	}
-
-	enabled(): boolean {
-		var places = <Place[]> this.inputs();
-		
-		var placeHasToken = function(p: Place): boolean {
-			return p.tokens > 0;
-		};
-
-		return _.filter(places, placeHasToken).length === places.length;
-	}
-
-	fire() {
-		if (!this.enabled()) {
-			return;
-		}
-
-		_.each(this.inputs(), (p: Place) => p.consume());
-		_.each(this.outputs(), (p: Place) => p.produce());
-	}
-}
-
-class Arc {
-	constructor(public input: Connectable, public output: Connectable) {
-		input.outputArcs.push(this);
-		output.inputArcs.push(this);
-	}
-}
-
-class Net {
-	transitions: Transition[];
-	places: Place[];
-
-	constructor(private start: Place) {
-		var visitResult = visit(this.start);
-
-		this.transitions = visitResult.transitions;
-		this.places = visitResult.places;
-	}
-
-	ingest(count: number = 1) {
-		this.start.tokens += count;
-	}
-
-	execute() {
-		_.each(this.transitions, (t: Transition) => t.fire());
-	}
-
-	summary() {
-		_.each(this.places, (place) => {
-			console.log(place.name + ": " + place.tokens);
-		});
-	}
-}
-
-interface VisitResult {
-	places: Place[];
-	transitions: Transition[]
-}
-
-function visit(start: Place, result: VisitResult = { places: [], transitions: [] }) : VisitResult {
-	if (_.contains(result.places, start)) {
-		return result;
-	}
-
-	result.places.push(start);
-
-	var transitions = <Transition[]> start.outputs();
-
-	if (transitions.length === 0) {
-		return result;
-	}
-
-	result.transitions = result.transitions.concat(transitions);
-
-	return visit(transitions[0].outputs()[0], result);
-}
-
-var p = [
-	null,
-	new Place("p1"),
-	new Place("p2"),
-	new Place("p3")
-];
-
-var t = [
-	null,
-	new Transition("t1", [p[1]], [p[2]]),
-	new Transition("t2", [p[2]], [p[3]])
-];
-
-var net = new Net(p[1]);
+var net = new Net(p1);
 net.ingest(10);
 
 net.summary();
