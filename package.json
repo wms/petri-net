@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "hapi": "~7.5.2"
+    "hapi": "~7.5.2",
+    "lodash": "~2.4.1"
   }
 }

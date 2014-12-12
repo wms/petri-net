@@ -1,91 +1,147 @@
-interface PlaceConfig {
-	name: string
-}
+declare var require;
+var _ = require('lodash');
 
-class Place {
-	name: string;
+class Connectable {
+	public inputArcs: Arc[] = [];
+	public outputArcs: Arc[] = [];
 
-	constructor(config: PlaceConfig) {
-		this.name = config.name;
+	constructor(public name: string) {
+	}
+
+	inputs<T>(): T {
+		return _.pluck(this.inputArcs, 'input');
+	}
+
+	outputs<T>(): T {
+		return _.pluck(this.outputArcs, 'output');
 	}
 }
 
-interface ArcConfig {
-	input: any;
-	output: any;
-}
+class Place extends Connectable {
+	public tokens: number = 0;
 
-class Arc {
-	input: any;
-	output: any;
+	constructor(public name: string) {
+		super(name);
+	}
 
-	constructor(config: ArcConfig) {
-		this.input = config.input;
-		this.output = config.output;
+	consume() {
+		this.tokens -= 1;
+	}
+
+	produce() {
+		this.tokens += 1;
 	}
 }
 
-interface TransitionCondition {
-	(token: any) : boolean
-}
+class Transition extends Connectable {
+	constructor(public name: string, inputs: Place[], outputs: Place[]) {
+		super(name);
 
-interface TransitionConfig {
-	input: Place;
-	output: Place;
-	name: string;
-	condition: TransitionCondition;
-}
-
-class Transition {
-	condition: TransitionCondition;
-	name: string;
-
-	input: Arc;
-	output: Arc;
-
-	constructor(config: TransitionConfig) {
-		this.condition = config.condition;
-		this.name = config.name;
-
-		this.input = new Arc({
-			input: config.input,
-			output: this
+		inputs.forEach((input) => {
+			new Arc(input, this);
 		});
 
-		this.output = new Arc({
-			input: this,
-			output: config.output
+		outputs.forEach((output) => {
+			new Arc(this, output);
 		});
+	}
+
+	enabled(): boolean {
+		var places = <Place[]> this.inputs();
+		
+		var placeHasToken = function(p: Place): boolean {
+			return p.tokens > 0;
+		};
+
+		return _.filter(places, placeHasToken).length === places.length;
 	}
 
 	fire() {
-		var tokens = [];
+		if (!this.enabled()) {
+			return;
+		}
 
-		tokens
-			.filter(this.condition)
-			.forEach(function(token) {
-				console.log('Firing transition for token');
-			});
+		_.each(this.inputs(), (p: Place) => p.consume());
+		_.each(this.outputs(), (p: Place) => p.produce());
+	}
+}
+
+class Arc {
+	constructor(public input: Connectable, public output: Connectable) {
+		input.outputArcs.push(this);
+		output.inputArcs.push(this);
 	}
 }
 
 class Net {
-	start: Place
+	transitions: Transition[];
+	places: Place[];
+
+	constructor(private start: Place) {
+		var visitResult = visit(this.start);
+
+		this.transitions = visitResult.transitions;
+		this.places = visitResult.places;
+	}
+
+	ingest(count: number = 1) {
+		this.start.tokens += count;
+	}
+
+	execute() {
+		_.each(this.transitions, (t: Transition) => t.fire());
+	}
+
+	summary() {
+		_.each(this.places, (place) => {
+			console.log(place.name + ": " + place.tokens);
+		});
+	}
 }
 
-var start = new Place({name: "The Beginning"});
-var middle = new Place({name: "The Middle"});
-var end = new Place({name: "The End"});
+interface VisitResult {
+	places: Place[];
+	transitions: Transition[]
+}
 
-new Transition({
-	input: start,
-	output: middle,
-	name: "Transition from Start",
-	condition: function(token) {
-		return true;
+function visit(start: Place, result: VisitResult = { places: [], transitions: [] }) : VisitResult {
+	if (_.contains(result.places, start)) {
+		return result;
 	}
-});
 
-new Net({
-	start: start
+	result.places.push(start);
+
+	var transitions = <Transition[]> start.outputs();
+
+	if (transitions.length === 0) {
+		return result;
+	}
+
+	result.transitions = result.transitions.concat(transitions);
+
+	return visit(transitions[0].outputs()[0], result);
+}
+
+var p = [
+	null,
+	new Place("p1"),
+	new Place("p2"),
+	new Place("p3")
+];
+
+var t = [
+	null,
+	new Transition("t1", [p[1]], [p[2]]),
+	new Transition("t2", [p[2]], [p[3]])
+];
+
+var net = new Net(p[1]);
+net.ingest(10);
+
+net.summary();
+
+_.times(11, function(n) {
+	console.log("Iteration " + n);
+	net.execute();
+	net.summary();
 });
