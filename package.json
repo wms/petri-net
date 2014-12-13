@@ -13,6 +13,7 @@
     "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "source-map-support": "~0.2.8"
+    "source-map-support": "~0.2.8",
+    "jasmine": "~2.1.1"
   }
 }
