@@ -1,5 +1,6 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import Arc = require('Arc');
-declare var require;
 var _ = require('lodash');
 
 class Connectable {

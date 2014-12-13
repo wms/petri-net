@@ -1,7 +1,8 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import Transition = require('./connectable/Transition');
 import Place = require('./connectable/Place');
 
-declare var require;
 var _ = require('lodash');
 
 interface VisitResult {

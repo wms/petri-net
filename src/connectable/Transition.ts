@@ -1,8 +1,8 @@
+/// <reference path="../../typings/tsd.d.ts" />
+
 import Connectable = require('../Connectable');
 import Place = require('./Place');
 import Arc = require('../Arc');
-
-declare var require;
 var _ = require('lodash');
 
 class Transition extends Connectable {

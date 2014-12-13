@@ -1,8 +1,9 @@
+/// <reference path="../typings/tsd.d.ts" />
+
 import Transition = require('./connectable/Transition');
 import Place = require('./connectable/Place');
 import visitor = require('./visitor');
 
-declare var require;
 var _ = require('lodash');
 
 class Net {
