@@ -98,10 +98,12 @@ module petri {
 			_.each(this.transitions, (t: Transition) => t.fire());
 		}
 
-		summary() {
-			_.each(this.places, (place) => {
-				console.log(place.name + ": " + place.tokens);
-			});
+		summary(): String[] {
+			var summarize = (place) : String => {
+				return [place.name, place.tokens].join(': ');
+			};
+
+			return _.map(this.places, summarize);
 		}
 	}
 
@@ -125,7 +127,13 @@ module petri {
 
 		result.transitions = result.transitions.concat(transitions);
 
-		return visit(transitions[0].outputs()[0], result);
+		_.each(transitions, (transition) => {
+			_.each(transition.outputs(), (place) => {
+				visit(place, result);
+			});
+		});
+
+		return result;
 	}
 }
 

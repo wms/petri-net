@@ -28,5 +28,21 @@ describe("Net", () => {
 			this.net.execute();
 			expect(this.middle.fire).toHaveBeenCalled();
 		});
-	})
+	});
+
+	describe('summary()', () => {
+		it('prints the number of tokens in each place', () => {
+			expect(this.net.summary()).toEqual([
+				'start place: 0',
+				'finish place: 0'
+			]);
+
+			this.net.ingest();
+
+			expect(this.net.summary()).toEqual([
+				'start place: 1',
+				'finish place: 0'
+			]);
+		});
+	});
 });
