@@ -2,7 +2,8 @@ var gulp    = require('gulp'),
 	stream  = require('event-stream'),
 	ts      = require('gulp-typescript'),
 	jasmine = require('gulp-jasmine'),
-	concat  = require('gulp-concat');
+	concat  = require('gulp-concat'),
+	cover   = require('gulp-coverage');
 
 var paths = {
 	src:  'src',
@@ -45,7 +46,13 @@ gulp.task('test', function() {
 		.pipe(ts())
 		.js
 		.pipe(gulp.dest(paths.spec))
-		.pipe(jasmine());
+		.pipe(cover.instrument({
+			pattern: [files.dist],
+		}))
+		.pipe(jasmine())
+		.pipe(cover.report({
+			outFile: 'coverage.html'
+		}));
 });
 
 gulp.task('dev', function() {
