@@ -34,6 +34,10 @@ module petri {
 		}
 
 		consume() {
+			if (this.tokens < 1) {
+				return;
+			}
+
 			this.tokens -= 1;
 		}
 

@@ -25,5 +25,10 @@ describe("Place", () => {
 			this.place.consume();
 			expect(this.place.tokens).toEqual(0);
 		});
+
+		it('does not decrement `tokens` below 0', () => {
+			this.place.consume();
+			expect(this.place.tokens).toEqual(0);
+		})
 	});
 });
