@@ -19,6 +19,7 @@
     "gulp-typescript": "~2.3.0",
     "gulp-jasmine": "~1.0.1",
     "gulp-concat": "~2.4.2",
-    "gulp-coverage": "~0.3.32"
+    "gulp-coverage": "~0.3.32",
+    "gulp-plumber": "~0.6.6"
   }
 }

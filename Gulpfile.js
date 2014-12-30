@@ -1,4 +1,5 @@
 var gulp    = require('gulp'),
+	plumber = require('gulp-plumber'),
 	stream  = require('event-stream'),
 	ts      = require('gulp-typescript'),
 	jasmine = require('gulp-jasmine'),
@@ -43,6 +44,11 @@ gulp.task('compile', function() {
 
 gulp.task('test', function() {
 	return gulp.src(files.spec)
+		.pipe(plumber({
+			errorHandler: function() {
+				this.emit('end');
+			}
+		}))
 		.pipe(ts())
 		.js
 		.pipe(gulp.dest(paths.spec))
