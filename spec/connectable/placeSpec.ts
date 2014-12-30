@@ -1,10 +1,11 @@
 /// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../petri.d.ts" />
 
-import Place = require('../../src/connectable/Place');
+import petri = require('../petri');
 
 describe("Place", () => {
 	beforeEach(() => {
-		this.place = new Place('test place');
+		this.place = new petri.Place('test place');
 	});
 
 	it('sets `tokens` to 0', () => {
