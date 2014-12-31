@@ -4,13 +4,13 @@ import _ = require('lodash');
 
 module petri {
 	export class Arc {
-		constructor(public input: Connectable, public output: Connectable) {
+		constructor(public input: Node, public output: Node) {
 			input.outputArcs.push(this);
 			output.inputArcs.push(this);
 		}
 	}
 
-	export class Connectable {
+	export class Node {
 		public inputArcs: Arc[] = [];
 		public outputArcs: Arc[] = [];
 
@@ -26,7 +26,7 @@ module petri {
 		}
 	}
 
-	export class Place extends Connectable {
+	export class Place extends Node {
 		public tokens: number = 0;
 
 		constructor(public name: string) {
@@ -46,7 +46,7 @@ module petri {
 		}
 	}
 
-	export class Transition extends Connectable {
+	export class Transition extends Node {
 		constructor(public name: string, inputs: Place[], outputs: Place[]) {
 			super(name);
 

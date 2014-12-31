@@ -3,18 +3,18 @@
 
 import petri = require('./petri');
 
-describe("Connectable", () => {
+describe("Node", () => {
 	beforeEach(() => {
-		this.source = new petri.Connectable('test connectable');
+		this.source = new petri.Node('test node');
 
 		this.inputs = [
-			new petri.Connectable('test input 1'),
-			new petri.Connectable('test input 2')
+			new petri.Node('test input 1'),
+			new petri.Node('test input 2')
 		];
 
 		this.outputs = [
-			new petri.Connectable('test output 1'),
-			new petri.Connectable('test output 2')
+			new petri.Node('test output 1'),
+			new petri.Node('test output 2')
 		];
 	});
 
