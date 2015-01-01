@@ -31,4 +31,19 @@ describe("Place", () => {
 			expect(this.place.tokens).toEqual(0);
 		})
 	});
+
+	describe('describe()', () => {
+		it('describes type', () => {
+			expect(this.place.describe().type).toEqual('place');
+		});
+
+		it('describes the number of tokens', () => {
+			expect(this.place.describe().tokens).toEqual(0);
+		});
+
+		it('describes output transitions', () => {
+			new petri.Transition('test transition', [this.place], [new petri.Place('test output')]);
+			expect(this.place.describe().transitions).toEqual(['test transition']);
+		});
+	});
 });

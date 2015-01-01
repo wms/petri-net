@@ -45,4 +45,19 @@ describe("Net", () => {
 			]);
 		});
 	});
+
+	describe('describe()', () => {
+		it('returns an array of node descriptions', () => {
+			spyOn(this.start, 'describe').and.returnValue('start description');
+			spyOn(this.finish, 'describe').and.returnValue('finish description');
+			spyOn(this.middle, 'describe').and.returnValue('middle description');
+
+			var result = this.net.describe();
+			expect(result).toEqual([
+				'start description',
+				'finish description',
+				'middle description'
+			]);
+		});
+	});
 });

@@ -52,4 +52,14 @@ describe("Transition", () => {
 			expect(this.outPlace.produce).toHaveBeenCalled();
 		});
 	});
+
+	describe('describe()', () => {
+		it('describes type', () => {
+			expect(this.transition.describe().type).toEqual('transition');
+		});
+
+		it('describes output places', () => {
+			expect(this.transition.describe().places).toEqual(['test output place']);
+		});
+	});
 });

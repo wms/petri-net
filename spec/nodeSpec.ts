@@ -43,4 +43,12 @@ describe("Node", () => {
 			expect(this.source.outputs()).toEqual(this.outputs);
 		});
 	});
-})
+
+	describe("describe()", () => {
+		it("contains name", () => {
+			expect(this.source.describe()).toEqual({
+				name: 'test node'
+			});
+		});
+	});
+});
