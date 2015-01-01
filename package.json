@@ -1,15 +1,18 @@
 {
-  "name": "workflow",
-  "version": "0.0.0",
-  "description": "Workflow Executor",
-  "main": "workflow.js",
+  "name": "petri-net",
+  "version": "0.1.0",
+  "description": "Petri Net modelling and execution",
+  "main": "dist/petri.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test"
   },
-  "author": "",
+  "author": {
+    "name": "Warren Seymour",
+    "email": "warren@radify.io",
+    "url": "http://radify.io"
+  },
   "license": "ISC",
   "dependencies": {
-    "hapi": "~7.5.2",
     "lodash": "~2.4.1"
   },
   "devDependencies": {
