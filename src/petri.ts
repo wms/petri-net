@@ -10,6 +10,10 @@ module petri {
 		}
 	}
 
+	export interface NodeDescription {
+		name: String
+	}
+
 	export class Node {
 		public inputArcs: Arc[] = [];
 		public outputArcs: Arc[] = [];
@@ -24,6 +28,17 @@ module petri {
 		outputs() {
 			return _.pluck(this.outputArcs, 'output');
 		}
+
+		describe(): NodeDescription {
+			return {
+				name: this.name
+			};
+		}
+	}
+
+	export interface PlaceDescription extends NodeDescription {
+		transitions: String[];
+		tokens: number;
 	}
 
 	export class Place extends Node {
@@ -44,6 +59,19 @@ module petri {
 		produce() {
 			this.tokens += 1;
 		}
+
+		describe(): PlaceDescription {
+			return <PlaceDescription> _.extend(super.describe(), {
+				type: 'place',
+				tokens: this.tokens,
+				transitions: _.pluck(this.outputs(), 'name')
+			});
+		}
+	}
+
+	export interface TransitionDescription extends NodeDescription {
+		places: String[];
+		enabled: boolean;
 	}
 
 	export class Transition extends Node {
@@ -77,6 +105,13 @@ module petri {
 			_.each(this.inputs(), (p: Place) => p.consume());
 			_.each(this.outputs(), (p: Place) => p.produce());
 		}
+
+		describe(): TransitionDescription {
+			return <TransitionDescription> _.extend(super.describe(), {
+				type: 'transition',
+				places: _.pluck(this.outputs(), 'name')
+			});
+		}
 	}
 
 	export class Net {
@@ -104,6 +139,18 @@ module petri {
 			};
 
 			return _.map(this.places, summarize);
+		}
+
+		describe(): Object[] {
+			var places = _.map(this.places, (place) => {
+				return place.describe();
+			});
+
+			var transitions = _.map(this.transitions, (transition) => {
+				return transition.describe();
+			});
+
+			return [].concat(places, transitions);
 		}
 	}
 
