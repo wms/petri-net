@@ -1,6 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 
 import _ = require('lodash');
+import events = require('events');
 
 module petri {
 	export class Arc {
@@ -14,11 +15,12 @@ module petri {
 		name: String
 	}
 
-	export class Node {
+	export class Node extends events.EventEmitter {
 		public inputArcs: Arc[] = [];
 		public outputArcs: Arc[] = [];
 
 		constructor(public name: string) {
+			super();
 		}
 
 		inputs() {
@@ -104,6 +106,7 @@ module petri {
 
 			_.each(this.inputs(), (p: Place) => p.consume());
 			_.each(this.outputs(), (p: Place) => p.produce());
+			this.emit('fire');
 		}
 
 		describe(): TransitionDescription {

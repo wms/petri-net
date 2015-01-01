@@ -35,6 +35,7 @@ describe("Transition", () => {
 		beforeEach(() => {
 			spyOn(this.inPlace, 'consume');
 			spyOn(this.outPlace, 'produce');
+			spyOn(this.transition, 'emit');
 		});
 
 		it('does nothing if not enabled', () => {
@@ -42,6 +43,7 @@ describe("Transition", () => {
 
 			expect(this.inPlace.consume).not.toHaveBeenCalled();
 			expect(this.outPlace.produce).not.toHaveBeenCalled();
+			expect(this.transition.emit).not.toHaveBeenCalled();
 		});
 
 		it('consumes input and produces output if enabled', () => {
@@ -50,6 +52,7 @@ describe("Transition", () => {
 
 			expect(this.inPlace.consume).toHaveBeenCalled();
 			expect(this.outPlace.produce).toHaveBeenCalled();
+			expect(this.transition.emit).toHaveBeenCalledWith('fire');
 		});
 	});
 
