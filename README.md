@@ -1,4 +1,4 @@
-# Petri-Net v0.1.1
+# Petri-Net v0.2.0
 A simple library for modelling and executing [Petri Nets](http://en.wikipedia.org/wiki/Petri_net).
 
 ## Features
@@ -30,6 +30,9 @@ var p1 = new petri.Place('p1'),
 	net = new petri.Net(p1);
 
 net.ingest(10);
+t1.on('fire', function() {
+	console.log('t1 fired');
+});
 
 _.times(5, function() {
 	console.log(net.describe());

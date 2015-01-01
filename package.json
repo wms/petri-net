@@ -1,6 +1,6 @@
 {
   "name": "petri-net",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Petri Net modelling and execution",
   "main": "dist/petri.js",
   "scripts": {
