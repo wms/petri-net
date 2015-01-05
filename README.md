@@ -1,4 +1,4 @@
-# Petri-Net v0.2.0
+# Petri-Net v0.2.1
 A simple library for modelling and executing [Petri Nets](http://en.wikipedia.org/wiki/Petri_net).
 
 ## Features

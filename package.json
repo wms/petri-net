@@ -1,8 +1,15 @@
 {
   "name": "petri-net",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Petri Net modelling and execution",
   "homepage": "https://github.com/warrenseymour/petri-net",
+  "bugs": {
+    "url": "https://github.com/warrenseymour/petri-net/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warrenseymour/petri-net.git"
+  },
   "main": "dist/petri.js",
   "scripts": {
     "test": "gulp test"
