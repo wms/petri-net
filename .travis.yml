@@ -12,3 +12,4 @@ deploy:
     api_key: {{NPM_API_KEY}}
     on:
         tags: true
+        branch: master
