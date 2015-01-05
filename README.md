@@ -5,14 +5,13 @@ A simple library for modelling and executing [Petri Nets](http://en.wikipedia.or
 - Representation of simple Nets using token counters
 - Typescript implementation
 - OO paradigm
+- Emit Events when Transitions are fired
 
 ## Roadmap
 - Weighted Arcs
-- Embedded/Linked Nets
 - Adopt functional paradigm/immutable data
-- Persist nets and state to storage backend
-- Extensions such as Coloured and Timed Nets
-- Transition `enabled()` and `fire()` hooks
+- Persist Nets and state to storage backend
+- Extensions such as Coloured, Timed and Hierarchical Nets
 - Stepwise replay and analysis of previous executions
 
 ## Usage

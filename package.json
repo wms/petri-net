@@ -2,6 +2,7 @@
   "name": "petri-net",
   "version": "0.2.0",
   "description": "Petri Net modelling and execution",
+  "homepage": "https://github.com/warrenseymour/petri-net",
   "main": "dist/petri.js",
   "scripts": {
     "test": "gulp test"
